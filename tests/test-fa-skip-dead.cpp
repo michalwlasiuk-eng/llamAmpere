@@ -153,7 +153,7 @@ static bool run_case(ggml_backend_t backend, const fa_case & c, int n_perf, run_
     ggml_tensor * mw = ggml_new_tensor_2d(ctx, GGML_TYPE_F16, c.n_kv + pad, mask_rows);
     ggml_tensor * m  = pad ? ggml_view_2d(ctx, mw, c.n_kv, mask_rows, mw->nb[1], 0) : mw;
     ggml_tensor * o = ggml_flash_attn_ext(ctx, q, k, v, m, 1.0f/sqrtf((float) D), 0.0f, 0.0f);
-    ggml_flash_attn_ext_set_prec(o, GGML_PREC_F32);
+    ggml_prec_set_acc(o, GGML_PREC_F32);
     ggml_set_output(o);
 
     ggml_cgraph * gf = ggml_new_graph(ctx);

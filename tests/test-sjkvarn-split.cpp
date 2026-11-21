@@ -24,7 +24,7 @@
 #include "../src/llama-kv-cache.h"
 #include "../src/llama-context.h"
 #include "../src/llama-arch.h"
-#include "../src/llama-model-saver.h"
+#include "test-kv-writer.h"
 
 #include <cmath>
 #include <cstdio>
@@ -59,7 +59,7 @@ static void tensor_data(ggml_tensor * tensor, void * /*userdata*/) {
 static llama_model * make_model() {
     gguf_context * meta = gguf_init_empty();
     {
-        llama_model_saver ms(LLM_ARCH_LLAMA, meta);
+        test_kv_writer ms(LLM_ARCH_LLAMA, meta); // the saver no longer takes (arch, ctx)
         ms.add_kv(LLM_KV_GENERAL_ARCHITECTURE,         llm_arch_name(LLM_ARCH_LLAMA));
         ms.add_kv(LLM_KV_VOCAB_SIZE,                   n_vocab);
         ms.add_kv(LLM_KV_CONTEXT_LENGTH,               uint32_t(8192));
